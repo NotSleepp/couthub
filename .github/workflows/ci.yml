@@ -51,6 +51,10 @@ jobs:
             $output | Tee-Object -FilePath $env:GITHUB_STEP_SUMMARY -Append
 
             if ($exitCode -ne 0) {
+              foreach ($line in ($output | Select-Object -Last 30)) {
+                $message = ([string]$line).Replace('%', '%25').Replace("`r", '%0D').Replace("`n", '%0A')
+                Write-Output "::error title=$testFile::$message"
+              }
               exit $exitCode
             }
           }

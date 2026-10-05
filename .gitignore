@@ -1,0 +1,28 @@
+# Dependencies and generated builds
+node_modules/
+dist/
+release/
+.audit/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+scripts/test-*.js
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+user_prompt.txt
+user_prompt_full.txt
+
+# Logs and operating-system files
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor-local state
+.vscode/
+.idea/

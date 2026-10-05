@@ -1,0 +1,55 @@
+name: Reportar un error
+description: Contanos qué falló y cómo reproducirlo.
+title: "[Error]: "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Antes de enviar, quitá correos, nombres de cuenta, rutas privadas,
+        tokens, cookies y cualquier otra información personal.
+  - type: input
+    id: version
+    attributes:
+      label: Versión de Account Hub
+      placeholder: Por ejemplo, 0.2.0 o compilación desde la rama main
+    validations:
+      required: true
+  - type: dropdown
+    id: windows
+    attributes:
+      label: Versión de Windows
+      options:
+        - Windows 11
+        - Windows 10
+        - Otra versión de Windows
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Pasos para reproducir
+      description: Escribí los pasos mínimos para observar el problema.
+      placeholder: |
+        1. Abrí...
+        2. Elegí...
+        3. Observé...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Resultado observado
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Mensajes de error (opcional)
+      description: Revisá y redactá la salida antes de pegarla. No adjuntes credenciales ni perfiles.
+      render: text

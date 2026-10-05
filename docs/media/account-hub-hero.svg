@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="560" viewBox="0 0 1440 560" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">Account Hub — todas tus cuentas en un solo espacio</title>
+  <desc id="description">Ilustración de una aplicación oscura con perfiles independientes de Codex, correo y proyectos.</desc>
+  <defs>
+    <linearGradient id="background" x1="35" y1="24" x2="1390" y2="548" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11152B"/>
+      <stop offset=".53" stop-color="#111322"/>
+      <stop offset="1" stop-color="#101B29"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#A68BFF"/>
+      <stop offset="1" stop-color="#655BFF"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#42D6B0"/>
+      <stop offset="1" stop-color="#86E7CA"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(442 0 0 350 1225 100)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6058D8" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#6058D8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="715" y="36" width="696" height="506" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="backgroundFix"/>
+      <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feGaussianBlur stdDeviation="16"/>
+      <feComposite in2="SourceAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.38 0"/>
+      <feBlend in2="backgroundFix" result="shadow"/>
+      <feBlend in="SourceGraphic" in2="shadow" result="shape"/>
+    </filter>
+    <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#A99CFF" fill-opacity=".22"/>
+    </pattern>
+  </defs>
+
+  <rect width="1440" height="560" rx="28" fill="url(#background)"/>
+  <rect width="1440" height="560" rx="28" fill="url(#glow)"/>
+  <circle cx="1280" cy="270" r="234" fill="url(#dots)" opacity=".62"/>
+  <path d="M0 495C280 430 430 554 710 476s465-69 730 10v74H0z" fill="#171B31" fill-opacity=".45"/>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <rect x="76" y="69" width="50" height="50" rx="15" fill="url(#accent)"/>
+    <path d="M101 82.5 114.5 90v15L101 112.5 87.5 105V90L101 82.5Z" stroke="white" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M101 82.5V98m13.5-8L101 98l-13.5-8M101 98v14.5m13.5-7.5L101 98l-13.5 7" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>
+
+    <text x="143" y="92" fill="#F7F6FF" font-size="21" font-weight="700" letter-spacing=".4">ACCOUNT HUB</text>
+    <text x="143" y="112" fill="#9DA2BD" font-size="12" letter-spacing="1.6">TU ESPACIO DE TRABAJO LOCAL</text>
+
+    <rect x="78" y="166" width="232" height="31" rx="15.5" fill="#292649" stroke="#4C427F"/>
+    <circle cx="96" cy="181.5" r="4" fill="url(#mint)"/>
+    <text x="108" y="186" fill="#CBC5FF" font-size="11" font-weight="650" letter-spacing="1.3">CODIGO ABIERTO · LICENCIA MIT</text>
+
+    <text x="76" y="260" fill="#FBFAFF" font-size="47" font-weight="750" letter-spacing="-1.7">Todas tus cuentas,</text>
+    <text x="76" y="316" fill="#B8A8FF" font-size="47" font-weight="750" letter-spacing="-1.7">en un solo espacio.</text>
+    <text x="78" y="364" fill="#B4B8CD" font-size="17">Codex, ChatGPT, correo y proyectos.</text>
+    <text x="78" y="390" fill="#B4B8CD" font-size="17">Perfiles separados. Todo bajo tu control.</text>
+
+    <g transform="translate(78 438)">
+      <rect width="145" height="35" rx="10" fill="url(#accent)"/>
+      <text x="72.5" y="23" fill="white" font-size="12" font-weight="700" text-anchor="middle">HECHO PARA WINDOWS</text>
+      <rect x="157" width="130" height="35" rx="10" fill="#20243A" stroke="#383D59"/>
+      <text x="222" y="23" fill="#E3E5F3" font-size="12" font-weight="650" text-anchor="middle">PRIVADO Y LOCAL</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="752" y="66" width="610" height="428" rx="20" fill="#10121C" stroke="#34384F"/>
+      <path d="M772 66h570a20 20 0 0 1 20 20v39H752V86a20 20 0 0 1 20-20Z" fill="#151724"/>
+      <path d="M752 125h610" stroke="#292D40"/>
+      <circle cx="779" cy="95" r="5" fill="#FF6A77"/>
+      <circle cx="798" cy="95" r="5" fill="#F3C65E"/>
+      <circle cx="817" cy="95" r="5" fill="#58D8A7"/>
+      <text x="858" y="100" fill="#E9EAF4" font-size="13" font-weight="650">Account Hub</text>
+      <rect x="1268" y="84" width="66" height="22" rx="11" fill="#172E2B" stroke="#275A4E"/>
+      <circle cx="1282" cy="95" r="3" fill="#54DDB1"/>
+      <text x="1290" y="99" fill="#8CE5C6" font-size="9" font-weight="700" letter-spacing=".7">LOCAL</text>
+
+      <rect x="771" y="147" width="155" height="326" rx="12" fill="#131622"/>
+      <rect x="784" y="163" width="126" height="33" rx="8" fill="#282542"/>
+      <rect x="796" y="173" width="12" height="12" rx="3" fill="#9583FF"/>
+      <text x="817" y="185" fill="#F0EEFF" font-size="11" font-weight="600">Cuentas Codex</text>
+      <circle cx="802" cy="219" r="6" stroke="#8B91AA" stroke-width="1.5"/>
+      <path d="M799 219h6m-3-3v6" stroke="#8B91AA" stroke-width="1.2"/>
+      <text x="817" y="223" fill="#9DA2B8" font-size="11">Correo</text>
+      <path d="M796 250h13v10h-13z" stroke="#8B91AA" stroke-width="1.3" stroke-linejoin="round"/>
+      <path d="m797 251 5.5 5 5.5-5" stroke="#8B91AA" stroke-width="1.2"/>
+      <text x="817" y="259" fill="#9DA2B8" font-size="11">Proyectos</text>
+      <path d="M796 291h12v11h-12zM799 288h6" stroke="#8B91AA" stroke-width="1.3" stroke-linecap="round"/>
+      <text x="817" y="300" fill="#9DA2B8" font-size="11">Worktrees</text>
+      <rect x="784" y="425" width="4" height="28" rx="2" fill="#8E7CFF"/>
+      <text x="797" y="438" fill="#7E849B" font-size="9" letter-spacing="1">PERFILES</text>
+      <text x="797" y="455" fill="#B9BED1" font-size="10">Aislados y persistentes</text>
+
+      <text x="953" y="169" fill="#F0F1F8" font-size="19" font-weight="700">Ranuras de Codex</text>
+      <text x="953" y="190" fill="#9298B0" font-size="11">Cada cuenta conserva su propio perfil</text>
+      <rect x="1257" y="149" width="84" height="29" rx="8" fill="url(#accent)"/>
+      <text x="1299" y="168" fill="white" font-size="10" font-weight="700" text-anchor="middle">+ AGREGAR</text>
+
+      <g>
+        <rect x="950" y="211" width="183" height="111" rx="13" fill="#171A28" stroke="#675FE4" stroke-width="1.5"/>
+        <rect x="950" y="211" width="183" height="3" rx="1.5" fill="#8F7AFF"/>
+        <rect x="965" y="228" width="29" height="29" rx="9" fill="#665BEB"/>
+        <text x="979.5" y="247" fill="white" font-size="12" font-weight="700" text-anchor="middle">01</text>
+        <text x="1004" y="240" fill="#F4F3FA" font-size="12" font-weight="650">Personal</text>
+        <text x="1004" y="256" fill="#8790A8" font-size="9">Perfil independiente</text>
+        <rect x="965" y="274" width="152" height="27" rx="7" fill="#21253A"/>
+        <circle cx="979" cy="287.5" r="3.5" fill="#55D7B1"/>
+        <text x="990" y="291" fill="#B7C0D2" font-size="9">Sesión iniciada</text>
+      </g>
+      <g>
+        <rect x="1145" y="211" width="196" height="111" rx="13" fill="#171A28" stroke="#2D3145"/>
+        <rect x="1145" y="211" width="196" height="3" rx="1.5" fill="#BE75FF"/>
+        <rect x="1160" y="228" width="29" height="29" rx="9" fill="#964FE1"/>
+        <text x="1174.5" y="247" fill="white" font-size="12" font-weight="700" text-anchor="middle">02</text>
+        <text x="1199" y="240" fill="#F4F3FA" font-size="12" font-weight="650">Desarrollo</text>
+        <text x="1199" y="256" fill="#8790A8" font-size="9">Perfil independiente</text>
+        <rect x="1160" y="274" width="165" height="27" rx="7" fill="#21253A"/>
+        <circle cx="1174" cy="287.5" r="3.5" fill="#858BA2"/>
+        <text x="1185" y="291" fill="#B7C0D2" font-size="9">Listo para autenticar</text>
+      </g>
+
+      <text x="953" y="354" fill="#9298B0" font-size="9" font-weight="700" letter-spacing="1.2">UN MISMO ESPACIO DE TRABAJO</text>
+      <g>
+        <rect x="950" y="371" width="121" height="75" rx="11" fill="#171A28" stroke="#2D3145"/>
+        <rect x="965" y="386" width="23" height="23" rx="7" fill="#275E55"/>
+        <path d="M971 397h11m-5.5-5.5v11" stroke="#77E0BE" stroke-width="1.7" stroke-linecap="round"/>
+        <text x="965" y="427" fill="#E0E2EF" font-size="10" font-weight="600">Correo</text>
+        <text x="965" y="439" fill="#8790A8" font-size="8">Perfiles de Chrome</text>
+      </g>
+      <g>
+        <rect x="1083" y="371" width="121" height="75" rx="11" fill="#171A28" stroke="#2D3145"/>
+        <rect x="1098" y="386" width="23" height="23" rx="7" fill="#2C4B73"/>
+        <path d="m1104 393 5.5 9 5.5-9" stroke="#8BC4FF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="1098" y="427" fill="#E0E2EF" font-size="10" font-weight="600">Proyectos</text>
+        <text x="1098" y="439" fill="#8790A8" font-size="8">Carpetas locales</text>
+      </g>
+      <g>
+        <rect x="1216" y="371" width="125" height="75" rx="11" fill="#171A28" stroke="#2D3145"/>
+        <rect x="1231" y="386" width="23" height="23" rx="7" fill="#53412A"/>
+        <path d="M1237 394h11m-11 4h11m-11 4h7" stroke="#F0C773" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="1231" y="427" fill="#E0E2EF" font-size="10" font-weight="600">Terminal</text>
+        <text x="1231" y="439" fill="#8790A8" font-size="8">CLI interactiva</text>
+      </g>
+
+      <path d="M950 460h391" stroke="#292D40"/>
+      <circle cx="961" cy="477" r="3" fill="#54DDB1"/>
+      <text x="972" y="481" fill="#9DA3B8" font-size="9">Local por diseño · Tus credenciales quedan en tu equipo</text>
+    </g>
+  </g>
+</svg>

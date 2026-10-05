@@ -1,0 +1,98 @@
+{
+  "name": "account-hub",
+  "version": "0.2.0",
+  "description": "Account Hub - Multi-account manager for ChatGPT, Codex, Email & Projects",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on http://127.0.0.1:5173 && cross-env NODE_ENV=development electron .\"",
+    "dev:web": "vite",
+    "web": "npm run web:build && npm run web:start",
+    "web:build": "vite build",
+    "web:start": "node scripts/web-server.cjs",
+    "build": "vite build && electron-builder",
+    "build:vite": "vite build",
+    "preview": "vite preview",
+    "electron:dev": "cross-env NODE_ENV=development electron .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/**/*.test.js",
+    "test:desktop": "node scripts/verify-desktop.cjs",
+    "test:web": "node scripts/verify-web.cjs",
+    "test:web:production": "node scripts/verify-web.cjs --production",
+    "test:browser": "node scripts/verify-browser.cjs",
+    "test:packaged": "node scripts/verify-desktop.cjs --packaged",
+    "verify": "npm run typecheck && npm test && npm run build:vite && npm run test:desktop && npm run test:web && npm run test:web:production && npm run test:browser"
+  },
+  "keywords": [
+    "account-manager",
+    "codex",
+    "chatgpt",
+    "multi-account"
+  ],
+  "author": "Daniel",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "build": {
+    "appId": "com.accounthub.app",
+    "productName": "Account Hub",
+    "npmRebuild": false,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "build/icon.ico",
+      "build/tray-icon.png"
+    ],
+    "extraResources": [{"from":"launchers","to":"launchers","filter":["*.bat","*.ps1"]}],
+    "asarUnpack": ["node_modules/node-pty/**/*", "node_modules/better-sqlite3/prebuilds/**/*"],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "dependencies": {
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/addon-web-links": "^0.12.0",
+    "@xterm/xterm": "^6.0.0",
+    "better-sqlite3": "^13.0.3",
+    "node-pty": "^1.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "concurrently": "^10.0.5",
+    "cross-env": "^10.1.0",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "wait-on": "^9.5.1"
+  }
+}

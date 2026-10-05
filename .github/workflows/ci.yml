@@ -20,10 +20,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Check out source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -35,7 +35,25 @@ jobs:
         run: npm run typecheck
 
       - name: Run unit and integration tests
-        run: npm test
+        shell: pwsh
+        run: |
+          $testFiles = @(
+            'tests/browser-launcher.test.js',
+            'tests/database.test.js',
+            'tests/git.test.js',
+            'tests/integration.test.js'
+          )
+
+          foreach ($testFile in $testFiles) {
+            "### $testFile" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+            $output = & node --test $testFile 2>&1
+            $exitCode = $LASTEXITCODE
+            $output | Tee-Object -FilePath $env:GITHUB_STEP_SUMMARY -Append
+
+            if ($exitCode -ne 0) {
+              exit $exitCode
+            }
+          }
 
       - name: Build the web interface
         run: npm run build:vite

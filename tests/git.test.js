@@ -34,14 +34,27 @@ describe('Git worktrees on actual temporary repositories',()=>{
     fs.unlinkSync(path.join(created[0].path,' file with space.txt'));
   });
   it('protects the main checkout, ignored files and unreadable directories',async()=>{
-    await assert.rejects(manager.removeWorktree(repo),/principal/);
-    fs.writeFileSync(path.join(created[0].path,'ignored.txt'),'do not lose');
-    await assert.rejects(manager.removeWorktree(created[0].path),/ignorados/);
-    fs.unlinkSync(path.join(created[0].path,'ignored.txt'));
-    await assert.rejects(manager.removeWorktree(path.join(root,'missing')),/carpeta/);
+    const listWorktrees=manager.listWorktrees.bind(manager),exec=manager.exec.bind(manager);let removeCwd;
+    manager.listWorktrees=async(...args)=>(await listWorktrees(...args)).reverse();
+    manager.exec=async(args,cwd)=>{if(args[0]==='worktree'&&args[1]==='remove')removeCwd=cwd;return exec(args,cwd);};
+    try {
+      const entries=await manager.listWorktrees(repo);
+      assert.equal(entries.find(w=>w.path===repo).isMain,true);
+      await assert.rejects(manager.removeWorktree(repo),/principal/);
+      assert.equal(removeCwd,undefined,'the primary checkout must be rejected before running git worktree remove');
+      fs.writeFileSync(path.join(created[0].path,'ignored.txt'),'do not lose');
+      await assert.rejects(manager.removeWorktree(created[0].path),/ignorados/);
+      fs.unlinkSync(path.join(created[0].path,'ignored.txt'));
+      await assert.rejects(manager.removeWorktree(path.join(root,'missing')),/carpeta/);
+    } finally {manager.listWorktrees=listWorktrees;manager.exec=exec;}
   });
   it('removes only the selected clean checkout and preserves the branch and main repo',async()=>{
-    await manager.removeWorktree(created[0].path);assert.equal(fs.existsSync(created[0].path),false);
+    const listWorktrees=manager.listWorktrees.bind(manager),exec=manager.exec.bind(manager);let removeCwd;
+    manager.listWorktrees=async(...args)=>(await listWorktrees(...args)).reverse();
+    manager.exec=async(args,cwd)=>{if(args[0]==='worktree'&&args[1]==='remove')removeCwd=cwd;return exec(args,cwd);};
+    try {await manager.removeWorktree(created[0].path);} finally {manager.listWorktrees=listWorktrees;manager.exec=exec;}
+    assert.equal(path.resolve(removeCwd).toLowerCase(),path.resolve(repo).toLowerCase());
+    assert.equal(fs.existsSync(created[0].path),false);
     assert.equal((await manager.listWorktrees(repo)).length,2);assert.ok(fs.existsSync(path.join(repo,'tracked.txt')));
     execFileSync('git',['show-ref','--verify','refs/heads/agent/codex-01'],{cwd:repo,windowsHide:true});
   });

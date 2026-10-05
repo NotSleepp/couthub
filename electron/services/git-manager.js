@@ -41,9 +41,14 @@ class GitManager {
       else if(current && line.startsWith('locked')) current.locked=true;
     }
     if(current) items.push(current);
-    return Promise.all(items.map(async (wt,index)=>{
-      try { const files=await this.getModifiedFiles(wt.path); return {...wt,isMain:index===0,dirty:files.length>0,lastCommit:await this.getLastCommit(wt.path),modifiedFiles:files.length}; }
-      catch(err) { return {...wt,isMain:index===0,dirty:true,lastCommit:'',modifiedFiles:0,error:err.message}; }
+    return Promise.all(items.map(async wt=>{
+      try {
+        const gitDir=path.resolve(wt.path,(await this.exec(['rev-parse','--git-dir'],wt.path)).trim());
+        const commonDir=path.resolve(wt.path,(await this.exec(['rev-parse','--git-common-dir'],wt.path)).trim());
+        const files=await this.getModifiedFiles(wt.path);
+        return {...wt,isMain:gitDir.toLowerCase()===commonDir.toLowerCase(),dirty:files.length>0,lastCommit:await this.getLastCommit(wt.path),modifiedFiles:files.length};
+      }
+      catch(err) { return {...wt,isMain:false,dirty:true,lastCommit:'',modifiedFiles:0,error:err.message}; }
     }));
   }
   async createWorktrees(repoPath,projectName,accounts) {
@@ -76,9 +81,9 @@ class GitManager {
   async removeWorktree(value) {
     const target=directory(value);
     const list=await this.listWorktrees(target);
-    const main=list[0];
+    const main=list.find(w=>w.isMain);
     const wt=list.find(w=>path.resolve(w.path).toLowerCase()===target.toLowerCase());
-    if(!wt || wt.isMain || wt.bare) throw new Error('No se puede eliminar la carpeta principal del repositorio.');
+    if(!main || !wt || wt.isMain || wt.bare) throw new Error('No se puede eliminar la carpeta principal del repositorio.');
     if(wt.locked) throw new Error('El worktree está bloqueado.');
     if(wt.dirty || wt.error) throw new Error('El worktree tiene cambios o no pudo comprobarse. Guardalos antes de eliminarlo.');
     if((await this.exec(['ls-files','--others','--ignored','--exclude-standard','-z'],target)).length) throw new Error('El worktree contiene archivos ignorados por Git. Respaldalos o retiralos antes de eliminarlo.');

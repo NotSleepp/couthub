@@ -39,7 +39,7 @@ describe('Git worktrees on actual temporary repositories',()=>{
     manager.exec=async(args,cwd)=>{if(args[0]==='worktree'&&args[1]==='remove')removeCwd=cwd;return exec(args,cwd);};
     try {
       const entries=await manager.listWorktrees(repo);
-      assert.equal(entries.find(w=>w.path===repo).isMain,true);
+      assert.equal(entries.find(w=>fs.realpathSync.native(w.path).toLowerCase()===fs.realpathSync.native(repo).toLowerCase()).isMain,true);
       await assert.rejects(manager.removeWorktree(repo),/principal/);
       assert.equal(removeCwd,undefined,'the primary checkout must be rejected before running git worktree remove');
       fs.writeFileSync(path.join(created[0].path,'ignored.txt'),'do not lose');

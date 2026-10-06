@@ -63,7 +63,19 @@ jobs:
         run: npm run build:vite
 
       - name: Verify the desktop app
-        run: npm run test:desktop
+        shell: pwsh
+        run: |
+          $output = & npm run test:desktop 2>&1
+          $exitCode = $LASTEXITCODE
+          $output | Tee-Object -FilePath $env:GITHUB_STEP_SUMMARY -Append
+
+          if ($exitCode -ne 0) {
+            foreach ($line in ($output | Select-Object -Last 80)) {
+              $message = ([string]$line).Replace('%', '%25').Replace("`r", '%0D').Replace("`n", '%0A')
+              Write-Output "::error title=Desktop verification::$message"
+            }
+            exit $exitCode
+          }
 
       - name: Verify the development web app
         run: npm run test:web

@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname,'..');
+fs.mkdirSync(path.join(root,'.audit'),{recursive:true});
 const fixture = fs.mkdtempSync(path.join(root,'.audit','web-'));
 const production = process.argv.includes('--production');
 const port = production ? 5188 : 5187;

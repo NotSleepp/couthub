@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '..');
+fs.mkdirSync(path.join(root, '.audit'), { recursive: true });
 const fixture = fs.mkdtempSync(path.join(root, '.audit', 'desktop-'));
 const env = { ...process.env, ACCOUNT_HUB_DATA_DIR:fixture, ACCOUNT_HUB_TEST:'1', NODE_ENV:'production' };
 delete env.ELECTRON_RUN_AS_NODE;

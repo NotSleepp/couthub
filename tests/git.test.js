@@ -56,7 +56,7 @@ describe('Git worktrees on actual temporary repositories',()=>{
     manager.exec=async(args,cwd)=>{if(args[0]==='worktree'&&args[1]==='remove')removeCwd=cwd;return exec(args,cwd);};
     try {
       const entries=await manager.listWorktrees(created[0].path);
-      const forPath=value=>entries.find(w=>path.resolve(w.path).toLowerCase()===path.resolve(value).toLowerCase());
+      const forPath=value=>entries.find(w=>fs.realpathSync.native(w.path).toLowerCase()===fs.realpathSync.native(value).toLowerCase());
       assert.equal(forPath(repo)?.isMain,true,JSON.stringify(entries));
       assert.equal(forPath(created[0].path)?.isMain,false,JSON.stringify(entries));
       await manager.removeWorktree(created[0].path);
@@ -65,7 +65,7 @@ describe('Git worktrees on actual temporary repositories',()=>{
       if(previousGitDir===undefined)delete process.env.GIT_DIR;else process.env.GIT_DIR=previousGitDir;
       if(previousGitWorkTree===undefined)delete process.env.GIT_WORK_TREE;else process.env.GIT_WORK_TREE=previousGitWorkTree;
     }
-    assert.equal(path.resolve(removeCwd).toLowerCase(),path.resolve(repo).toLowerCase());
+    assert.equal(fs.realpathSync.native(removeCwd).toLowerCase(),fs.realpathSync.native(repo).toLowerCase());
     assert.equal(fs.existsSync(created[0].path),false);
     assert.equal((await manager.listWorktrees(repo)).length,2);assert.ok(fs.existsSync(path.join(repo,'tracked.txt')));
     execFileSync('git',['show-ref','--verify','refs/heads/agent/codex-01'],{cwd:repo,windowsHide:true});

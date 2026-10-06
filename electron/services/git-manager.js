@@ -3,6 +3,12 @@ const fs = require('node:fs');
 const { createHash } = require('node:crypto');
 const { runFile, directory } = require('./platform');
 
+function canonicalPath(value) {
+  const resolved=path.resolve(value);
+  try { return fs.realpathSync.native(resolved).toLowerCase(); }
+  catch { return resolved.toLowerCase(); }
+}
+
 class GitManager {
   constructor(logger, baseDir) {
     this.logger=logger || console;
@@ -85,7 +91,7 @@ class GitManager {
     const target=directory(value);
     const list=await this.listWorktrees(target);
     const main=list.find(w=>w.isMain);
-    const wt=list.find(w=>path.resolve(w.path).toLowerCase()===target.toLowerCase());
+    const wt=list.find(w=>canonicalPath(w.path)===canonicalPath(target));
     if(!main || !wt || wt.isMain || wt.bare) throw new Error('No se puede eliminar la carpeta principal del repositorio.');
     if(wt.locked) throw new Error('El worktree está bloqueado.');
     if(wt.dirty || wt.error) throw new Error('El worktree tiene cambios o no pudo comprobarse. Guardalos antes de eliminarlo.');

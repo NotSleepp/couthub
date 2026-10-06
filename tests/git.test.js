@@ -5,6 +5,7 @@ const path=require('node:path');
 const os=require('node:os');
 const {execFileSync}=require('node:child_process');
 const {GitManager}=require('../electron/services/git-manager');
+const canonicalPath=value=>fs.realpathSync.native(value).toLowerCase();
 describe('Git worktrees on actual temporary repositories',()=>{
   let root,repo,manager,created;
   before(()=>{
@@ -21,7 +22,7 @@ describe('Git worktrees on actual temporary repositories',()=>{
     assert.ok(created.every(r=>r.success),JSON.stringify(created));
     assert.equal((await manager.listWorktrees(repo)).length,3);
     const replay=await manager.createWorktrees(repo,'same project',[{slot_number:1}]);
-    assert.equal(replay[0].path,created[0].path);assert.equal(replay[0].reused,true);
+    assert.equal(canonicalPath(replay[0].path),canonicalPath(created[0].path));assert.equal(replay[0].reused,true);
   });
   it('rejects injected or nonnumeric slot values',async()=>{
     await assert.rejects(manager.createWorktrees(repo,'same project',[{slot_number:'1 & echo injected'}]),/válidas/);
@@ -39,7 +40,7 @@ describe('Git worktrees on actual temporary repositories',()=>{
     manager.exec=async(args,cwd)=>{if(args[0]==='worktree'&&args[1]==='remove')removeCwd=cwd;return exec(args,cwd);};
     try {
       const entries=await manager.listWorktrees(repo);
-      assert.equal(entries.find(w=>fs.realpathSync.native(w.path).toLowerCase()===fs.realpathSync.native(repo).toLowerCase()).isMain,true);
+      assert.equal(entries.find(w=>canonicalPath(w.path)===canonicalPath(repo)).isMain,true);
       await assert.rejects(manager.removeWorktree(repo),/principal/);
       assert.equal(removeCwd,undefined,'the primary checkout must be rejected before running git worktree remove');
       fs.writeFileSync(path.join(created[0].path,'ignored.txt'),'do not lose');
@@ -56,7 +57,7 @@ describe('Git worktrees on actual temporary repositories',()=>{
     manager.exec=async(args,cwd)=>{if(args[0]==='worktree'&&args[1]==='remove')removeCwd=cwd;return exec(args,cwd);};
     try {
       const entries=await manager.listWorktrees(created[0].path);
-      const forPath=value=>entries.find(w=>fs.realpathSync.native(w.path).toLowerCase()===fs.realpathSync.native(value).toLowerCase());
+      const forPath=value=>entries.find(w=>canonicalPath(w.path)===canonicalPath(value));
       assert.equal(forPath(repo)?.isMain,true,JSON.stringify(entries));
       assert.equal(forPath(created[0].path)?.isMain,false,JSON.stringify(entries));
       await manager.removeWorktree(created[0].path);
@@ -65,7 +66,7 @@ describe('Git worktrees on actual temporary repositories',()=>{
       if(previousGitDir===undefined)delete process.env.GIT_DIR;else process.env.GIT_DIR=previousGitDir;
       if(previousGitWorkTree===undefined)delete process.env.GIT_WORK_TREE;else process.env.GIT_WORK_TREE=previousGitWorkTree;
     }
-    assert.equal(fs.realpathSync.native(removeCwd).toLowerCase(),fs.realpathSync.native(repo).toLowerCase());
+    assert.equal(canonicalPath(removeCwd),canonicalPath(repo));
     assert.equal(fs.existsSync(created[0].path),false);
     assert.equal((await manager.listWorktrees(repo)).length,2);assert.ok(fs.existsSync(path.join(repo,'tracked.txt')));
     execFileSync('git',['show-ref','--verify','refs/heads/agent/codex-01'],{cwd:repo,windowsHide:true});

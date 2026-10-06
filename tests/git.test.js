@@ -56,8 +56,9 @@ describe('Git worktrees on actual temporary repositories',()=>{
     manager.exec=async(args,cwd)=>{if(args[0]==='worktree'&&args[1]==='remove')removeCwd=cwd;return exec(args,cwd);};
     try {
       const entries=await manager.listWorktrees(created[0].path);
-      assert.equal(entries.find(w=>w.path===repo).isMain,true,JSON.stringify(entries));
-      assert.equal(entries.find(w=>w.path===created[0].path).isMain,false,JSON.stringify(entries));
+      const forPath=value=>entries.find(w=>path.resolve(w.path).toLowerCase()===path.resolve(value).toLowerCase());
+      assert.equal(forPath(repo)?.isMain,true,JSON.stringify(entries));
+      assert.equal(forPath(created[0].path)?.isMain,false,JSON.stringify(entries));
       await manager.removeWorktree(created[0].path);
     } finally {
       manager.listWorktrees=listWorktrees;manager.exec=exec;

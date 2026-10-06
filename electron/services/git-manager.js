@@ -43,12 +43,13 @@ class GitManager {
       else if(current && line.startsWith('locked')) current.locked=true;
     }
     if(current) items.push(current);
-    return Promise.all(items.map(async wt=>{
+    // Git guarantees that `worktree list` emits the main checkout first.
+    // Keep this identity before any caller sorts or reorders the results;
+    // resolving --git-dir paths is not stable across Windows path aliases.
+    return Promise.all(items.map(async (wt,index)=>{
       try {
-        const gitDir=path.resolve(wt.path,(await this.exec(['rev-parse','--git-dir'],wt.path)).trim());
-        const commonDir=path.resolve(wt.path,(await this.exec(['rev-parse','--git-common-dir'],wt.path)).trim());
         const files=await this.getModifiedFiles(wt.path);
-        return {...wt,isMain:gitDir.toLowerCase()===commonDir.toLowerCase(),dirty:files.length>0,lastCommit:await this.getLastCommit(wt.path),modifiedFiles:files.length};
+        return {...wt,isMain:index===0,dirty:files.length>0,lastCommit:await this.getLastCommit(wt.path),modifiedFiles:files.length};
       }
       catch(err) { return {...wt,isMain:false,dirty:true,lastCommit:'',modifiedFiles:0,error:err.message}; }
     }));

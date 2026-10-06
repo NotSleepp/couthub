@@ -50,9 +50,20 @@ describe('Git worktrees on actual temporary repositories',()=>{
   });
   it('removes only the selected clean checkout and preserves the branch and main repo',async()=>{
     const listWorktrees=manager.listWorktrees.bind(manager),exec=manager.exec.bind(manager);let removeCwd;
+    const previousGitDir=process.env.GIT_DIR,previousGitWorkTree=process.env.GIT_WORK_TREE;
+    process.env.GIT_DIR=path.join(repo,'.git');process.env.GIT_WORK_TREE=repo;
     manager.listWorktrees=async(...args)=>(await listWorktrees(...args)).reverse();
     manager.exec=async(args,cwd)=>{if(args[0]==='worktree'&&args[1]==='remove')removeCwd=cwd;return exec(args,cwd);};
-    try {await manager.removeWorktree(created[0].path);} finally {manager.listWorktrees=listWorktrees;manager.exec=exec;}
+    try {
+      const entries=await manager.listWorktrees(created[0].path);
+      assert.equal(entries.find(w=>w.path===repo).isMain,true,JSON.stringify(entries));
+      assert.equal(entries.find(w=>w.path===created[0].path).isMain,false,JSON.stringify(entries));
+      await manager.removeWorktree(created[0].path);
+    } finally {
+      manager.listWorktrees=listWorktrees;manager.exec=exec;
+      if(previousGitDir===undefined)delete process.env.GIT_DIR;else process.env.GIT_DIR=previousGitDir;
+      if(previousGitWorkTree===undefined)delete process.env.GIT_WORK_TREE;else process.env.GIT_WORK_TREE=previousGitWorkTree;
+    }
     assert.equal(path.resolve(removeCwd).toLowerCase(),path.resolve(repo).toLowerCase());
     assert.equal(fs.existsSync(created[0].path),false);
     assert.equal((await manager.listWorktrees(repo)).length,2);assert.ok(fs.existsSync(path.join(repo,'tracked.txt')));

@@ -10,7 +10,9 @@ class GitManager {
     this.pending=new Set();
   }
   async exec(args,cwd) {
-    try { return (await runFile('git',args,{ cwd,encoding:'utf8',windowsHide:true,timeout:30000,maxBuffer:4*1024*1024 })).stdout; }
+    const env={...process.env};
+    for(const key of Object.keys(env)) if(/^GIT_(?:DIR|WORK_TREE|COMMON_DIR|INDEX_FILE|PREFIX|CEILING_DIRECTORIES)$/i.test(key)) delete env[key];
+    try { return (await runFile('git',args,{ cwd,env,encoding:'utf8',windowsHide:true,timeout:30000,maxBuffer:4*1024*1024 })).stdout; }
     catch (err) { throw new Error('Git: '+(err.stderr?.trim() || err.message)); }
   }
   async isGitRepo(dir) { try { return (await this.exec(['rev-parse','--is-inside-work-tree'],dir)).trim()==='true'; } catch { return false; } }
